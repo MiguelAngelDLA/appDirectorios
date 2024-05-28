@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Box, Typography, Button, Modal, InputLabel, TextField, Stack, Select, MenuItem } from "@mui/material";
+import { Box, Typography, Button, Modal, InputLabel, TextField, Stack, Select, MenuItem, IconButton, Snackbar } from "@mui/material";
+import StarIcon from "@mui/icons-material/Star";
 import { SelectChangeEvent } from "@mui/material/Select";
 
 import axios from "axios";
@@ -28,6 +29,8 @@ export const ShowContactsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModifyModalOpen, setIsModifyModalOpen] = useState(false);
   const [isEraseModalOpen, setIsEraseModalOpen] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [mensajeSnackbar, setSnackbarMessage] = useState("");
 
   useEffect(() => {
     getInfo();
@@ -89,7 +92,23 @@ export const ShowContactsPage = () => {
       [name]: value
     }));
   };
-  
+
+  const handleSaveToLocalStorage = (contactoActual: ServerData) => {
+    setSelectedContact(contactoActual);
+    if (contactoActual) {
+        if(localStorage.getItem(contactoActual.id)){
+          localStorage.removeItem(contactoActual.id)
+          setSnackbarMessage(contactoActual.nombre + " eliminado de favoritos con exito");
+          setSnackbarOpen(true);
+        }else{
+          localStorage.setItem(contactoActual.id, JSON.stringify(contactoActual));
+          setSnackbarMessage('!'+ contactoActual.nombre + ' guardado en favoritos!');
+          setSnackbarOpen(true);
+        }
+          
+    }
+        
+  };
 
   const handleModalClose = () => {
     setIsModalOpen(false);
@@ -101,18 +120,39 @@ export const ShowContactsPage = () => {
   return (
     <div>
       <Box display="flex" flexWrap="wrap" justifyContent="center">
+      <Snackbar
+              open={snackbarOpen}
+             autoHideDuration={6000}
+              onClose={() => setSnackbarOpen(false)}
+              message={mensajeSnackbar}
+      />
         {data && data.map(contact => (
           <Box
             key={contact.id}
             border={1}
-            borderRadius={4}
-            p={2}
+            borderRadius={7}
+            p={3}
             m={2}
             onClick={() => handleContactClick(contact)}
             sx={{ cursor: 'pointer' }}
           >
+            <IconButton aria-label="guardar a favoritos" size="small"
+            onClick={
+              () =>handleSaveToLocalStorage(contact)
+            }>
+            <StarIcon
+              sx={{
+                top: 10,
+                right: 10,
+                cursor: 'pointer',
+                color: localStorage.getItem(contact.id) ? 'yellow' : 'black',
+              }}     
+              
+            />
+            </IconButton>     
             <Typography variant="h6">{`${contact.nombre} ${contact.apellido}`}</Typography>
             <Typography>{`Teléfono: ${contact.telefono}`}</Typography>
+            
           </Box>
         ))}
       </Box>

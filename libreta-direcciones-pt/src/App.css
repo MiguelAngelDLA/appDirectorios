@@ -6,8 +6,8 @@
   min-width: 100vh;
   margin: auto;
   display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: flex-start; /* Align items to the top */
+  justify-content: center; 
+  align-items: flex-start; 
 
 
 }

@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { Box, Typography, Button, Modal, TextField, Stack, Select, MenuItem, IconButton, Snackbar } from "@mui/material";
+import { useState, useEffect } from "react";
+import { Box, Typography, Button, Modal, Stack, IconButton, Snackbar } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
-import { SelectChangeEvent } from "@mui/material/Select";
 
 interface ServerData {
   id: string;
@@ -21,8 +20,6 @@ export const FavoritesPage = () => {
   const [data, setData] = useState<ServerData[]>([]);
   const [selectedContact, setSelectedContact] = useState<ServerData | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isModifyModalOpen, setIsModifyModalOpen] = useState(false);
-  const [isEraseModalOpen, setIsEraseModalOpen] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [mensajeSnackbar, setSnackbarMessage] = useState("");
 
@@ -34,22 +31,6 @@ export const FavoritesPage = () => {
   const handleContactClick = (contact: ServerData) => {
     setSelectedContact(contact);
     setIsModalOpen(true);
-  };
-
-  const handleModifyClick = () => {
-    setIsModifyModalOpen(true);
-  };
-  
-  const handleDeleteClick = () => {
-    setIsEraseModalOpen(true);
-  };
-
-  const handleFieldChange = (e: React.ChangeEvent<HTMLInputElement | { name?: string; value: unknown }>) => {
-    const { name, value } = e.target;
-    setSelectedContact(prevState => ({
-      ...(prevState as ServerData), 
-      [name as string]: value
-    }));
   };
 
   const handleSaveToLocalStorage = (contactoActual: ServerData) => {
@@ -71,13 +52,11 @@ export const FavoritesPage = () => {
   };
   const handleModalClose = () => {
     setIsModalOpen(false);
-    setIsModifyModalOpen(false);
-    setIsEraseModalOpen(false);
   };
 
   return (
-    <div>
-      <Box width = "100vh" display="flex" flexWrap="wrap" justifyContent="center" >
+    <div style={{height: "1080px", width: "1920px"}}>
+      <Box display="flex" flexWrap="wrap" justifyContent="center" >
         <Snackbar
           open={snackbarOpen}
           autoHideDuration={6000}
@@ -109,8 +88,44 @@ export const FavoritesPage = () => {
             <Typography variant="h6">{`${contact.nombre} ${contact.apellido}`}</Typography>
             <Typography>{`Teléfono: ${contact.telefono}`}</Typography>
           </Box>
+
+          
         ))}
       </Box>
+      <Modal open={isModalOpen} onClose={handleModalClose}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
+        <Box sx={{
+            width: 600,
+            bgcolor: 'white',
+            borderRadius: 4,
+            boxShadow: 24,
+            p: 4
+          }}>
+            <Stack spacing={2} width={600} >
+            <Typography variant="h6">Editar Contacto</Typography>
+            <Typography>{`Nombre: ${selectedContact?.nombre} ${selectedContact?.apellido}`}</Typography>
+            <Typography>{`Teléfono: ${selectedContact?.telefono}`}</Typography>
+            <Typography>{`Correo Electrónico: ${selectedContact?.email}`}</Typography>
+            <Typography>{`Calle: ${selectedContact?.calle}`}</Typography>
+            <Typography>{`Estado: ${selectedContact?.estado}`}</Typography>
+            <Typography>{`Empresa: ${selectedContact?.empresa}`}</Typography>
+            <Typography>{`Cargo: ${selectedContact?.cargo}`}</Typography>
+            <Typography>{`Notas: ${selectedContact?.notas}`}</Typography>
+            <Typography>{`Fecha de Cumpleaños: ${selectedContact?.cumpleaños}`}</Typography>
+
+            <Button onClick={handleModalClose}>Cerrar</Button>
+
+
+            </Stack>
+          </Box>
+
+        </Modal>
+
+      
     </div>
   );
 };

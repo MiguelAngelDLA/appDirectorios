@@ -1,6 +1,5 @@
 // App.tsx
 import './App.css'
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AddContactPage } from './components/AddContactPage';
 import ResponsiveAppBar from './components/NavigationBar';

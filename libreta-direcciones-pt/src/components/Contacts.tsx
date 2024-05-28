@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Box, Typography, Button, Modal, InputLabel, TextField, Stack, Select, MenuItem, IconButton, Snackbar } from "@mui/material";
+import { Box, Typography, Button, Modal, TextField, Stack, Select, MenuItem, IconButton, Snackbar } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import { SelectChangeEvent } from "@mui/material/Select";
 
@@ -39,9 +39,9 @@ export const ShowContactsPage = () => {
   const getInfo = () => {
     axios.get<ServerResponse>("http://localhost:5000/api/contacts")
       .then(response => {
-        console.log(response.data); // Log the response data
+        console.log(response.data); 
         console.log(response.data.Contactos)
-        setData(response.data.Contactos); // Access the Contacts array
+        setData(response.data.Contactos);
       })
       .catch(error => {
         console.error("Error obteniendo los contactos:", error);
@@ -118,7 +118,7 @@ export const ShowContactsPage = () => {
 
 
   return (
-    <div>
+    <div style={{height: "1080px", width: "1920px"}}>
       <Box display="flex" flexWrap="wrap" justifyContent="center">
       <Snackbar
               open={snackbarOpen}
@@ -181,8 +181,8 @@ export const ShowContactsPage = () => {
             <Typography>{`Notas: ${selectedContact?.notas}`}</Typography>
             <Typography>{`Fecha de Cumpleaños: ${selectedContact?.cumpleaños}`}</Typography>
 
-            <Button onClick={handleModificarClick} >Modificar</Button>
-            <Button onClick={handleDeleteClick}>Borrar Contacto</Button>
+            <Button variant="contained" onClick={handleModificarClick} >Modificar</Button>
+            <Button variant="contained" color="error" onClick={handleDeleteClick}>Borrar Contacto</Button>
             <Button onClick={handleModalClose}>Cerrar</Button>
 
 
@@ -306,7 +306,7 @@ export const ShowContactsPage = () => {
             onChange={handleFieldChange}
           />
           </Stack>
-          <Button onClick={handleSaveContact} >Guardar</Button>
+          <Button variant="contained" onClick={handleSaveContact} >Guardar</Button>
           <Button onClick={handleModalClose}>Cerrar</Button>
         </Box>
       </Modal>
@@ -325,9 +325,10 @@ export const ShowContactsPage = () => {
                 boxShadow: 24,
                 p: 4
               }}
+              
               >
                 <Typography variant="h6" color={"red"}>¿Está seguro de querer eliminar este contacto?</Typography>
-                <Button onClick={handleDeleteContact}>Si, estoy seguro</Button>
+                <Button variant="contained" color="error" onClick={handleDeleteContact}>Si, estoy seguro</Button>
                 <Button onClick={handleModalClose}>No, no quiero borrarlo</Button>
               </Box>
         </Modal>

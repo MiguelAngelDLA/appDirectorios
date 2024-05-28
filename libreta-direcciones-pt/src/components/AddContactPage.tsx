@@ -68,7 +68,7 @@ export const AddContactPage = () => {
   };
 
   return (
-    <div style={{height: '100vh'}}>
+    <div style={{height: '100vh', width: "1920px"}}>
     <center>
     
     <center><h1>Añadir contacto</h1></center>
